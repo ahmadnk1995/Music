@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+
+<div class="p-3 mb-2 bg-primary text-white">
+
+    <body>
+        <div>
+            <a href="{%url 'songs' %}" class="btn btn-danger" role="button">Songs</a>
+            {% if user.is_authenticated %}
+            <a href="{%url 'playlists' %}" class="btn btn-danger" role="button">Playlists</a>
+            {%else%}
+            <a href="{%url 'login' %}" class="btn btn-danger" role="button">Playlists</a>
+            {%endif%}
+            {% if user.is_authenticated %}
+<a href="{%url 'logout' %}" class="btn btn-danger" role="button">  Welcome {{user.username}} want to Logout ? </a>
+{%else%}
+<a href="{%url 'login' %}" class="btn btn-danger" role="button"> Login </a>
+{%endif%}
+        </div>
+        </br></br>
+        <p class="text-center">
+            <h1 class="h1">Songs</h1>
+        </p>
+
+        </br>
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Song</th>
+                    <th scope="col">Choose Playlist</th>
+                    <th scope="col">Add</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for song in songs_list%}
+                <tr>
+                    <form method="POST"> {% csrf_token %}
+                        <th scope="row">{{song.name}}</th>
+                        <td><audio controls>
+                                <source src="{{song.audio_track.url}}" type="audio/mp3">
+                            </audio></td>
+                        <td><select class="mdb-select md-form colorful-select dropdown-primary" id="selectValue"
+                                name="hhh">
+                                {%for playlist in Playlists%}
+                                <option value="{{playlist.id}}+{{song.id}}">{{playlist}}</option>
+                                {%endfor%}
+                            </select>
+                        </td>
+                        <td> <input type="submit" value="Add to playlist"></td>
+                </tr>
+                </form>
+                {%endfor%}
+            </tbody>
+        </table>
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="p-3 mb-2 bg-primary text-white">
+
+        <div>
+            <a href="{%url 'songs' %}" class="btn btn-danger" role="button">Songs</a>
+            {% if user.is_authenticated %}
+            <a href="{%url 'playlists' %}" class="btn btn-danger" role="button">Playlists</a>
+            {%else%}
+            <a href="{%url 'login' %}" class="btn btn-danger" role="button">Playlists</a>
+            {%endif%}
+
+{% if user.is_authenticated %}
+<a href="{%url 'logout' %}" class="btn btn-danger" role="button">  Welcome {{user.username}} want to Logout ? </a>
+{%else%}
+<a href="{%url 'login' %}" class="btn btn-danger" role="button"> Login </a>
+{%endif%}
+
+            
+        </div>
+        <br> <br>
+
+
+        <h1>My Playlist</h1>
+
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Song</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for object in playlists%}
+                <tr>
+                    <th scope="row">{{object.song.name}}</th>
+                    <td> <audio controls>
+                            <source src="{{object.song.audio_track.url}}" type="audio/mp3">
+                        </audio></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+
+
+        </br></br></br></br></br></br>
+
+
+        <h2>All Songs</h2>
+
+
+
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Song</th>
+                    <th scope="col">Add To Play List</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in songs%}
+                <form method="POST"> {% csrf_token %}
+                    <tr>
+                        <th scope="row"> {{i.name}} </th>
+                        <td> <audio controls>
+                                <source src="{{i.audio_track.url}}" type="audio/mp3">
+                            </audio></td>
+                        <input type="hidden" name="id" value="{{i.id}}">
+                        <td> <input type="submit" name="add" value="add to playlist"></td>
+
+                    </tr>
+                </form>
+                {%endfor%}
+            </tbody>
+        </table>
+
+
+
+
+        <h1>Add Song To PlayList</h1>
+        <form action="#" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
